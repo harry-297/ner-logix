@@ -1,0 +1,18 @@
+fastapi==0.141.1
+uvicorn==0.52.4
+sqlalchemy==2.0.52
+asyncpg==0.31.0
+python-dotenv==1.2.3
+pydantic==2.13.5
+httpx
+apscheduler
+
+# ML hazard models (backend/ml/)
+# scikit-learn is pinned to match the version risk_model.joblib and
+# flood_model.joblib were trained with (1.8.0) — a newer scikit-learn fails to
+# unpickle them (ModuleNotFoundError: _loss). Both models load clean on this
+# pin; if you retrain either one with a newer scikit-learn, bump this to match.
+scikit-learn==1.8.0
+joblib
+pandas
+numpy

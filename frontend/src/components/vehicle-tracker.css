@@ -1,0 +1,282 @@
+/* ============================================================
+   Vehicle tracker map (used inside the Vehicles page modal)
+   ============================================================ */
+
+.vt-map-wrap {
+  position: relative;
+  min-height: 460px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #e9edf5;
+}
+
+.vt-map {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- overlays ---------- */
+
+.vt-overlay {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.vt-overlay > * { pointer-events: auto; }
+
+.vt-top-left { top: 12px; left: 12px; }
+.vt-top-right { top: 12px; right: 12px; }
+
+/* sits above MapLibre's compact attribution control */
+.vt-legend {
+  left: 12px;
+  bottom: 34px;
+  align-items: center;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.vt-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+
+.vt-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.vt-swatch.dashed {
+  background: repeating-linear-gradient(90deg, #7d8aa8 0 5px, transparent 5px 8px);
+}
+
+.vt-legend-note {
+  padding-left: 8px;
+  border-left: 1px solid var(--line);
+  color: var(--warn);
+  cursor: help;
+}
+
+.vt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.vt-chip .vt-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 0 rgba(23, 148, 90, 0.5);
+  animation: vt-live 1.8s ease-out infinite;
+}
+
+.vt-chip.idle .vt-live-dot { background: var(--ink-mute); animation: none; }
+.vt-chip.done .vt-live-dot { background: var(--ok); animation: none; }
+
+.vt-chip small { font-weight: 500; color: var(--ink-mute); }
+
+@keyframes vt-live {
+  0% { box-shadow: 0 0 0 0 rgba(23, 148, 90, 0.5); }
+  100% { box-shadow: 0 0 0 9px rgba(23, 148, 90, 0); }
+}
+
+.vt-map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: 0.12s;
+}
+
+.vt-map-btn:hover { background: #fff; border-color: var(--brand-line); color: var(--brand-strong); }
+
+.vt-map-btn.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.vt-message {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: rgba(243, 245, 250, 0.82);
+  backdrop-filter: blur(2px);
+}
+
+/* ---------- vehicle marker ---------- */
+
+/* MapLibre positions the outer element with a transform, so all styling and
+   animation lives on the children. */
+.vt-marker {
+  --vt-color: #2563eb;
+  width: 46px;
+  height: 46px;
+}
+
+.vt-marker .vt-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--vt-color);
+  opacity: 0;
+}
+
+.vt-marker.is-moving .vt-pulse { animation: vt-pulse 2s ease-out infinite; }
+
+.vt-marker .vt-badge {
+  position: absolute;
+  inset: 7px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--vt-color);
+  border: 3px solid #fff;
+  color: #fff;
+  box-shadow: 0 5px 14px rgba(16, 20, 40, 0.38);
+}
+
+@keyframes vt-pulse {
+  0% { transform: scale(0.55); opacity: 0.45; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ---------- origin / destination pins ---------- */
+
+.vt-stop { width: 16px; height: 16px; }
+
+.vt-stop-dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(16, 20, 40, 0.35);
+}
+
+.vt-stop.origin .vt-stop-dot { background: var(--ok); }
+.vt-stop.destination .vt-stop-dot { background: var(--ink); }
+
+.vt-stop-label {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 8px;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   Tracking modal layout (Vehicles page)
+   ============================================================ */
+
+.modal-card.tracking { max-width: 1120px; }
+
+.tracking-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(290px, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.tracking-side { display: flex; flex-direction: column; min-width: 0; }
+
+.tracking-side .detail-item { min-width: 0; }
+.tracking-side .detail-item strong { overflow-wrap: anywhere; }
+
+.tracking-coords {
+  font-variant-numeric: tabular-nums;
+}
+
+.vt-sim {
+  margin-top: auto;
+  padding: 14px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.tracking-side .progress-track.lg { margin-bottom: 0; }
+
+.vt-sim-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.vt-sim p { font-size: 12px; line-height: 1.5; color: var(--ink-soft); }
+
+.vt-seg {
+  display: inline-flex;
+  margin-top: 10px;
+  padding: 3px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.vt-seg button {
+  padding: 5px 13px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.vt-seg button.active { background: var(--ink); color: #fff; }
+
+.vt-sim small { display: block; margin-top: 8px; font-size: 11px; color: var(--ink-mute); }
+
+@media (max-width: 900px) {
+  .tracking-body { grid-template-columns: 1fr; }
+  .vt-map-wrap { height: 380px; min-height: 380px; }
+}

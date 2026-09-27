@@ -1,0 +1,16 @@
+﻿# Python
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+*.pyc
+
+# Environment secrets — NEVER commit these
+.env
+backend/.env
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Local frontend env overrides
+frontend/.env.local
