@@ -55,7 +55,7 @@ in `frontend/src/data/mockData.ts`).
 
 ---
 
-## 3. Architecture (as pitched to judges)
+## 3. Architecture
 
 ```
                           ┌────────────────────────┐
@@ -84,12 +84,4 @@ in `frontend/src/data/mockData.ts`).
 
 ---
 
-## 4. What's real vs. what's simulated in this build
 
-- **Real**: FastAPI backend, PostGIS-style road/incident schema, working
-  route-planning API call from the Routes page, MapLibre GIS rendering.
-- **Simulated for the demo** (clearly the next integration step, not
-  hidden from judges): live vehicle GPS pings, weather feed values,
-  multilingual alert delivery, and third-party integration statuses. These
-  use the same data contracts the real integrations would return, so
-  swapping in live feeds is additive, not a rewrite.
